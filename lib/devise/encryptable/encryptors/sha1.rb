@@ -9,17 +9,7 @@ module Devise
         # Generates a default password digest based on stretches, salt, pepper and the
         # incoming password.
         def self.digest(password, stretches, salt, pepper)
-          digest = pepper
-          stretches.times { digest = self.secure_digest(salt, digest, password, pepper) }
-          digest
-        end
-
-      private
-
-        # Generate a SHA1 digest joining args. Generated token is something like
-        #   --arg1--arg2--arg3--argN--
-        def self.secure_digest(*tokens)
-          ::Digest::SHA1.hexdigest('--' << tokens.flatten.join('--') << '--')
+          ::Digest::SHA1.hexdigest(password + '--' + salt)
         end
       end
     end
